@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\Users\UsersResources;
 use App\Models\User;
-use App\Rules\PhoneRule;
-use Illuminate\Http\Request;
+
 
 class UserController extends Controller
 {
@@ -19,68 +20,41 @@ class UserController extends Controller
         ]);
     }
 
-
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:50'],
-            'email' => ['required', 'email', 'unique:users'],
-            'gender' => ['required'],
-            'password' => ['required', 'string', 'min:8', 'regex:/^[a-zA-Z0-9$#@!%^&*()\-_=+{};:,<.>\/?|[\]~`]+$/'],
-            'phone_number' => ['required', new PhoneRule()]
-
-        ]);
-
-        $validatedData['password'] = bcrypt($request->input('password'));
-
+        $validatedData = $request->validated();
         User::create($validatedData);
+
         return response()->json([
             'message' => 'User was created successfully'
         ]);
     }
+
 
     public function show(User $user)
     {
         if (!$user) {
             return response()->json([
                 'message' => 'User not found'
-            ], 200);
+            ], 404);
         }
 
         return response()->json([
-            'user' => $user
+            'user' => new UsersResources($user),
         ]);
     }
 
 
-
-    public function update(Request $request, $user)
+    public function update(UserUpdateRequest $request,User $user)
     {
-        $user = User::find($user);
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found'
-            ], 404);
-        }
-
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'gender' => 'required',
-            'phone_number' => 'required'
-        ]);
-
-        $validatedData['password'] = bcrypt($request->input('password'));
+        $validatedData = $request->validated();
 
         $user->update($validatedData);
 
         return response()->json([
             'message' => 'User was updated successfully'
-        ]);
+    ]);
     }
-
 
     public function destroy(User $user)
     {

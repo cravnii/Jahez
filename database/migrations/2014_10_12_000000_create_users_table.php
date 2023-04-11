@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\GenderEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,12 +17,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('gender');
+            $table->unsignedTinyInteger('gender')->nullable();
             $table->string('phone_number');
             $table->timestamps();
         });
     }
-  
+
 
 
     /**

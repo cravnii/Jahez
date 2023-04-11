@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Order extends Model
 {
     use HasFactory;
@@ -14,7 +13,6 @@ class Order extends Model
         'user_id',
         'restaurant_id',
         'total_price',
-        
     ];
 
     public function user()
@@ -22,10 +20,16 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'order_user');
+    }
+
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
     }
 }
+
 
 
