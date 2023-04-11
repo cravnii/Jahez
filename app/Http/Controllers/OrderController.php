@@ -3,33 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\OrderUpdateRequest;
+use App\Http\Resources\Orders\OrderResource;
+use App\Models\Order;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        // يتم استدعاء هذه الدالة لعرض قائمة بجميع الطلبات.
+        $orders = Order::paginate(10);
+        return response()->json([
+            'data' => [
+                'orders' => OrderResource::collection($orders),
+            ]
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(CreateOrderRequest $request)
+{
+    $validatedData = $request->all();
+    $order = Order::create($validatedData);
+
+    return response()->json([
+        'message' => 'Order was created successfully',
+        'order' => new OrderResource($order)
+    ]);
+}
+
+
+    public function show(Order $order)
     {
-        // يتم استدعاء هذه الدالة لحفظ الطلب الجديد في قاعدة البيانات.
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'order' => new OrderResource($order),
+        ]);
     }
 
-    public function show($id)
+
+    public function update(OrderUpdateRequest $request,  Order $order)
     {
-        // يتم استدعاء هذه الدالة لعرض تفاصيل طلب واحد معين بناءً على معرفه.
+        $validatedData = $request->validated();
+
+        $order->update($validatedData);
+
+        return response()->json([
+            'message' => 'Order was updated successfully',
+            'order' => new OrderResource($order)
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function destroy(Order $order)
     {
-        // يتم استدعاء هذه الدالة لتحديث معلومات طلب معين بناءً على معرفه.
+        $order->delete();
+        return response()->json([
+            'message' => 'Order deleted successfully'
+        ]);
     }
-
-    public function destroy($id)
-    {
-        // يتم استدعاء هذه الدالة لحذف طلب معين بناءً على معرفه.
-    }
-
 }
