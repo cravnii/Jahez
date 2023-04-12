@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Orders\CreateOrderRequest;
-use App\Http\Requests\Orders\OrderUpdateRequest;
+use App\Http\Requests\Orders\StoreOrderRequest;
+use App\Http\Requests\Orders\UpdateOrderRequest;
 use App\Http\Resources\Orders\OrderResource;
 use App\Models\Order;
 
@@ -20,7 +20,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(CreateOrderRequest $request)
+    public function store(StoreOrderRequest $request)
 {
     $validatedData = $request->all();
     $order = Order::create($validatedData);
@@ -46,7 +46,7 @@ class OrderController extends Controller
     }
 
 
-    public function update(OrderUpdateRequest $request,  Order $order)
+    public function update(UpdateOrderRequest $request,  Order $order)
     {
         $validatedData = $request->validated();
 

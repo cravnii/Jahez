@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Restaurants\RestaurantStoreRequest;
-use App\Http\Requests\Restaurants\RestaurantUpdateRequest;
+use App\Http\Requests\Restaurants\StoreRestaurantRequest;
+use App\Http\Requests\Restaurants\UpdateRestaurantRequest;
 use App\Http\Resources\Restaurants\RestaurantsResource;
 use App\Models\Restaurant;
 
@@ -19,7 +19,7 @@ class RestaurantController extends Controller
         ]);
     }
 
-    public function store(RestaurantStoreRequest $request)
+    public function store(StoreRestaurantRequest $request)
     {
         $validatedData = $request->validated();
         Restaurant::create($validatedData);
@@ -42,7 +42,7 @@ class RestaurantController extends Controller
         ]);
     }
 
-    public function update(RestaurantUpdateRequest $request, Restaurant $restaurant)
+    public function update(UpdateRestaurantRequest $request, Restaurant $restaurant)
     {
         $validatedData = $request->validated();
 

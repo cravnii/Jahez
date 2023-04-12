@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Restaurants;
+namespace App\Http\Requests\Orders;
 
-use App\Rules\PhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RestaurantUpdateRequest extends FormRequest
+class StoreOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +22,14 @@ class RestaurantUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string', 'min:3', 'max:50'],
-            'phone_number' => ['nullable', new PhoneRule()],
-            'email' => ['nullable', 'email', 'unique:users'],
-            'location' => ['nullable', 'string' , 'alpha'],
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'restaurant_id' => ['required', 'integer', 'exists:restaurants,id'],
+            'total_price' => ['required', 'integer'],
+
         ];
     }
 
 
 }
+
+
