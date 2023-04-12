@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Restaurants;
 
 use App\Rules\PhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,8 +26,7 @@ class RestaurantStoreRequest extends FormRequest
             'name' => ['required', 'string', 'min:3', 'max:50'],
             'phone_number' => ['required', new PhoneRule()],
             'email' => ['required', 'email', 'unique:users'],
-            'location' => ['required', 'string' , 'alpha'],
-
+            'location' => ['required', 'string', 'alpha'],
         ];
     }
 }

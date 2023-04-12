@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
-            $table->integer('restaurant_id');
+            $table->unsignedBigInteger('restaurant_id');
             $table->string('name');
             $table->decimal('price');
             $table->timestamps();

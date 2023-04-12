@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Orders;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,9 +22,12 @@ class OrderUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'=> 'required',
-            'restaurant_id'=> 'required',
-            'total_price'=> 'required',
+            'user_id' => ['nullable', 'integer', 'exists:users,id'],
+            'restaurant_id' => ['nullable', 'integer', 'exists:restaurants,id'],
+            'total_price' => ['nullable', 'integer'],
         ];
     }
-}
+
+
+    }
+

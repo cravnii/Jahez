@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RestaurantStoreRequest;
-use App\Http\Requests\RestaurantUpdateRequest;
+use App\Http\Requests\Restaurants\RestaurantStoreRequest;
+use App\Http\Requests\Restaurants\RestaurantUpdateRequest;
 use App\Http\Resources\Restaurants\RestaurantsResource;
 use App\Models\Restaurant;
 

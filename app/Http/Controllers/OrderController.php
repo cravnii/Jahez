@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateOrderRequest;
-use App\Http\Requests\OrderUpdateRequest;
+use App\Http\Requests\Orders\CreateOrderRequest;
+use App\Http\Requests\Orders\OrderUpdateRequest;
 use App\Http\Resources\Orders\OrderResource;
 use App\Models\Order;
 
