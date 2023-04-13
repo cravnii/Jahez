@@ -43,3 +43,11 @@ Route::prefix('/users')->group(function () {
 
 });
 
+Route::prefix('/mails')->group(function () {
+Route::get('/', [MailController::class, 'index'])->name('mails.index');
+Route::post('/store', [MailController::class, 'send'])->name('mails.send');
+Route::get('/{mail}', [MailController::class, 'show'])->name('mails.show');
+Route::put('/{mail}', [MailController::class, 'update'])->name('mails.update');
+Route::delete('/{mail}', [MailController::class, 'destroy'])->name('mails.destroy');
+});
+
