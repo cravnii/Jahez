@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\MealController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\UserController;
@@ -43,11 +44,11 @@ Route::prefix('/users')->group(function () {
 
 });
 
-Route::prefix('/mails')->group(function () {
-Route::get('/', [MailController::class, 'index'])->name('mails.index');
-Route::post('/store', [MailController::class, 'send'])->name('mails.send');
-Route::get('/{mail}', [MailController::class, 'show'])->name('mails.show');
-Route::put('/{mail}', [MailController::class, 'update'])->name('mails.update');
-Route::delete('/{mail}', [MailController::class, 'destroy'])->name('mails.destroy');
+Route::prefix('/meals')->group(function () {
+Route::get('/', [MealController::class, 'index'])->name('meals.index');
+Route::post('/store', [MealController::class, 'store'])->name('meals.store');
+Route::get('/{meal}', [MealController::class, 'show'])->name('meals.show');
+Route::put('/{meal}', [MealController::class, 'update'])->name('meals.update');
+Route::delete('/{meal}', [MealController::class, 'destroy'])->name('meals.destroy');
 });
 

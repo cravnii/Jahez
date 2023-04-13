@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Meals;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMailRequest extends FormRequest
+class StoreMealRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreMailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => ['required', 'integer'],
+            'restaurant_id'=> ['required', 'integer', 'exists:restaurants,id'],
+            'name'=> ['required', 'string'],
+            'price'=> ['required', 'integer'],
         ];
     }
+
 }

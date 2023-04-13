@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Mails;
+namespace App\Http\Resources\Meals;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MailResource extends JsonResource
+class MealsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,10 @@ class MailResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'body' => $this->body,
-            'sent_at' => $this->sent_at,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'restaurant_id'=> $this->restaurant_id,
+            'name'=> $this->name,
+            'price'=> $this->price,
+
         ];
     }
 }

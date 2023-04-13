@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Orders\StoreOrderRequest;
 use App\Http\Requests\Orders\UpdateOrderRequest;
-use App\Http\Resources\Orders\OrderResource;
+use App\Http\Resources\Orders\OrdersResource;
 use App\Models\Order;
 
 class OrderController extends Controller
@@ -15,7 +15,7 @@ class OrderController extends Controller
         $orders = Order::paginate(10);
         return response()->json([
             'data' => [
-                'orders' => OrderResource::collection($orders),
+                'orders' => OrdersResource::collection($orders),
             ]
         ]);
     }
@@ -27,7 +27,7 @@ class OrderController extends Controller
 
     return response()->json([
         'message' => 'Order was created successfully',
-        'order' => new OrderResource($order)
+        'order' => new OrdersResource($order)
     ]);
 }
 
@@ -41,7 +41,7 @@ class OrderController extends Controller
         }
 
         return response()->json([
-            'order' => new OrderResource($order),
+            'order' => new OrdersResource($order),
         ]);
     }
 
@@ -54,7 +54,7 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order was updated successfully',
-            'order' => new OrderResource($order)
+            'order' => new OrdersResource($order)
         ]);
     }
 
