@@ -23,13 +23,12 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'integer', 'exists:users,id'],
-            'restaurant_id' => ['required', 'integer', 'exists:restaurants,id'],
-            'total_price' => ['required', 'integer'],
-
+            'meals' => ['required','array'],
+            'meals.*.id' => ['required','exists:meals,id'],
+            'total_price' => ['required','numeric','min:0']
         ];
     }
-
-
 }
+
 
 

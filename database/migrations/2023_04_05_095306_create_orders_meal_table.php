@@ -10,9 +10,11 @@ class CreateOrdersMealTable extends Migration
     {
         Schema::create('order_meal', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id');
+            $table->unsignedBigInteger('order_id');
             $table->integer('meal_id');
             $table->timestamps();
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('meal_id')->references('id')->on('meals');
         });
     }
 

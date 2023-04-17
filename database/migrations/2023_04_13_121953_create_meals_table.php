@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('restaurant_id');
             $table->string('name');
+            $table->text('description')->nullable();
             $table->decimal('price');
             $table->timestamps();
 
