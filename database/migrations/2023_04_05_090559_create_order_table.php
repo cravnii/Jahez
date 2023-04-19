@@ -25,3 +25,4 @@ class CreateOrderTable extends Migration
     }
 }
 
+

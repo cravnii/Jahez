@@ -5,7 +5,7 @@ namespace App\Http\Requests\Restaurants;
 use App\Rules\PhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RestaurantStoreRequest extends FormRequest
+class UpdateRestaurantRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,12 @@ class RestaurantStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:50'],
-            'phone_number' => ['required', new PhoneRule()],
-            'email' => ['required', 'email', 'unique:users'],
-            'location' => ['required', 'string', 'alpha'],
+            'name' => ['nullable', 'string', 'min:3', 'max:50'],
+            'phone_number' => ['nullable', new PhoneRule()],
+            'email' => ['nullable', 'email', 'unique:users'],
+            'location' => ['nullable', 'string' , 'alpha'],
         ];
     }
+
+
 }

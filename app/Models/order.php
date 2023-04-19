@@ -25,7 +25,16 @@ class Order extends Model
     {
         return $this->belongsTo(Restaurant::class);
     }
+
+
+    public function orderMeals()
+    {
+        return $this->hasMany(OrderMeal::class);
+    }
+
+
 }
+
 
 
 

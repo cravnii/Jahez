@@ -6,9 +6,8 @@ use App\Enums\GenderEnum;
 use App\Rules\PhoneRule;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UserUpdateRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,14 +25,11 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string', 'min:3', 'max:50'],
-            'email' => ['nullable', 'email', 'unique:users'],
-            'gender' => ['nullable', 'integer', new EnumValue(GenderEnum::class,false)],
-            'password' => ['nullable', 'string', 'min:8', 'regex:/^[a-zA-Z0-9$#@!%^&*()\-_=+{};:,<.>\/?|[\]~`]+$/'],
-            'phone_number' => ['nullable', new PhoneRule()]
+            'name' => ['required', 'string', 'min:3', 'max:50'],
+            'email' => ['required', 'email', 'unique:users'],
+            'gender' => ['required','integer', new EnumValue(GenderEnum::class,false)],
+            'password' => ['required', 'string', 'min:8', 'regex:/^[a-zA-Z0-9$#@!%^&*()\-_=+{};:,<.>\/?|[\]~`]+$/'],
+            'phone_number' => ['required', new PhoneRule()]
         ];
     }
-
-
-
 }

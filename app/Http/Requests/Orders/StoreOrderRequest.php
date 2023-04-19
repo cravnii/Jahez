@@ -4,7 +4,7 @@ namespace App\Http\Requests\Orders;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateOrderRequest extends FormRequest
+class StoreOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,12 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'integer', 'exists:users,id'],
-            'restaurant_id' => ['required', 'integer', 'exists:restaurants,id'],
-            'total_price' => ['required', 'integer'],
-
+            'meals' => ['required','array'],
+            'meals.*.id' => ['required','exists:meals,id'],
+            'total_price' => ['required','numeric','min:0']
         ];
     }
-
-
 }
+
 
 

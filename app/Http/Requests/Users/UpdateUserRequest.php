@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Requests\Restaurants;
+namespace App\Http\Requests\Users;
 
+use App\Enums\GenderEnum;
 use App\Rules\PhoneRule;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class RestaurantUpdateRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +27,13 @@ class RestaurantUpdateRequest extends FormRequest
     {
         return [
             'name' => ['nullable', 'string', 'min:3', 'max:50'],
-            'phone_number' => ['nullable', new PhoneRule()],
             'email' => ['nullable', 'email', 'unique:users'],
-            'location' => ['nullable', 'string' , 'alpha'],
+            'gender' => ['nullable', 'integer', new EnumValue(GenderEnum::class,false)],
+            'password' => ['nullable', 'string', 'min:8', 'regex:/^[a-zA-Z0-9$#@!%^&*()\-_=+{};:,<.>\/?|[\]~`]+$/'],
+            'phone_number' => ['nullable', new PhoneRule()]
         ];
     }
+
 
 
 }

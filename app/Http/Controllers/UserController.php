@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Users\UserStoreRequest;
-use App\Http\Requests\Users\UserUpdateRequest;
+use App\Http\Requests\Users\StoreUserRequest;
+use App\Http\Requests\Users\UpdateUserRequest;
 use App\Http\Resources\Users\UsersResources;
 use App\Models\User;
 
@@ -20,7 +20,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function store(UserStoreRequest $request)
+    public function store(StoreUserRequest $request)
     {
         $validatedData = $request->validated();
         User::create($validatedData);
@@ -45,7 +45,7 @@ class UserController extends Controller
     }
 
 
-    public function update(UserUpdateRequest $request,User $user)
+    public function update(UpdateUserRequest $request,User $user)
     {
         $validatedData = $request->validated();
 

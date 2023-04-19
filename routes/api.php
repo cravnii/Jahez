@@ -51,3 +51,11 @@ Route::get('/{meal}', [MealController::class, 'show'])->name('meals.show');
 Route::put('/{meal}', [MealController::class, 'update'])->name('meals.update');
 Route::delete('/{meal}', [MealController::class, 'destroy'])->name('meals.destroy');
 });
+
+Route::prefix('/meals')->group(function () {
+Route::get('/', [MealController::class, 'index'])->name('meals.index');
+Route::post('/store', [MealController::class, 'store'])->name('meals.store');
+Route::get('/{meal}', [MealController::class, 'show'])->name('meals.show');
+Route::put('/{meal}', [MealController::class, 'update'])->name('meals.update');
+Route::delete('/{meal}', [MealController::class, 'destroy'])->name('meals.destroy');
+});
