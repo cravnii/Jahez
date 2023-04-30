@@ -8,8 +8,7 @@ use App\Http\Requests\Orders\UpdateOrderRequest;
 use App\Http\Resources\Orders\OrdersResource;
 use App\Models\Meal;
 use App\Models\Order;
-use App\Models\OrderMeal;
-
+use App\Models\Restaurant;
 
 class OrderController extends Controller
 {
@@ -22,7 +21,7 @@ class OrderController extends Controller
             ]
         ]);
     }
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request, Restaurant $restaurant)
     {
         $meals = $request->input('meals');
         $mealIds = collect($meals)->pluck('id')->toArray();
@@ -35,13 +34,13 @@ class OrderController extends Controller
         }
 
         $restaurantIds = collect($meals)->pluck('restaurant_id')->unique();
-        if ($restaurantIds->count() !== 1) {
+        if ($restaurantIds->count() !== 1 || $restaurantIds->first() !== $restaurant->id) {
             return response()->json([
                 'message' => 'All meals must belong to the same restaurant',
             ], 422);
         }
 
-        $restaurantId = $restaurantIds->first();
+        $restaurantId = $request->input('restaurant_id');
         if (!$restaurantId) {
             return response()->json([
                 'message' => 'Invalid restaurant ID',
@@ -60,12 +59,15 @@ class OrderController extends Controller
 
         $orderMeals = [];
         foreach ($meals as $meal) {
-            $orderMeals[] = new OrderMeal([
-                'meal_id' => $meal['id'],
-            ]);
+            $orderMeals[$meal['id']] = [
+                'quantity' => 1,
+                'price' => $meal['price'],
+            ];
         }
 
-        $order->orderMeals()->saveMany($orderMeals);
+        $mealsToAttach = Meal::query()->whereIn('id', $mealIds)->where('restaurant_id', $restaurant->id)->get();
+
+        $order->meals()->attach($mealsToAttach, $orderMeals);
 
         return response()->json([
             'message' => 'Order was created successfully',
@@ -73,13 +75,14 @@ class OrderController extends Controller
                 'id' => $order->id,
                 'user_id' => $order->user_id,
                 'restaurant_id' => $order->restaurant_id,
+                'meals' => $meals,
                 'total_price' => $order->total_price,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
+
             ],
         ]);
     }
-
 
 
 

@@ -24,5 +24,3 @@ class CreateOrderTable extends Migration
         Schema::dropIfExists('orders');
     }
 }
-
-
