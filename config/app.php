@@ -69,7 +69,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Riyadh',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +83,10 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'en'),
+
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +112,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -208,8 +212,11 @@ return [
     |
     */
 
+
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
+
+
 
 ];

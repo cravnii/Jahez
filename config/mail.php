@@ -36,14 +36,15 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'host' => env('MAIL_HOST', 'ryb_234@hotmail.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'username' => env('MAIL_USERNAME', 'cravnii'),
+            'password' => env('MAIL_PASSWORD', 'No1234567@'),
             'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'auth_mode' => null,
         ],
+
 
         'ses' => [
             'transport' => 'ses',
@@ -118,7 +119,9 @@ return [
 
         'paths' => [
             resource_path('views/vendor/mail'),
+            resource_path('views/emails'),
+
         ],
     ],
 
-];
+    ];

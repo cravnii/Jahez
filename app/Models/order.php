@@ -27,14 +27,15 @@ class Order extends Model
     }
 
     public function meals()
-    {
-        return $this->belongsToMany(Meal::class, 'order_meals')
-            ->withPivot('quantity', 'price');
-    }
+{
+    return $this->belongsToMany(Meal::class, 'order_meals')
+        ->withPivot('price');
+}
+
 
     public function orderMeals()
     {
-        return $this->hasMany(OrderMeal::class);
+        return $this->hasMany(OrderMeals::class);
     }
 
 

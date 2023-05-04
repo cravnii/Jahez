@@ -53,36 +53,39 @@ class OrderController extends Controller
             'user_id' => $request->input('user_id'),
             'restaurant_id' => $restaurantId,
             'total_price' => $total_price,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
-        $orderMeals = [];
+        $mealsArray = [];
         foreach ($meals as $meal) {
-            $orderMeals[$meal['id']] = [
-                'quantity' => 1,
-                'price' => $meal['price'],
+            $mealObject = Meal::find($meal['id']);
+            $order->meals()->attach($meal['id'], ['price' => $mealObject->price]);
+            $mealsArray[] = [
+                'id' => $mealObject->id,
+                'name' => $mealObject->name,
+                'price' => $mealObject->price,
             ];
         }
 
-        $mealsToAttach = Meal::query()->whereIn('id', $mealIds)->where('restaurant_id', $restaurant->id)->get();
-
-        $order->meals()->attach($mealsToAttach, $orderMeals);
+        $order->load(['restaurant', 'user', 'meals']);
 
         return response()->json([
             'message' => 'Order was created successfully',
             'order' => [
                 'id' => $order->id,
-                'user_id' => $order->user_id,
-                'restaurant_id' => $order->restaurant_id,
-                'meals' => $meals,
+                'user' => [
+                    'name' => $order->user->name,
+                ],
+                'restaurant' => [
+                    'name' => $order->restaurant->name,
+                ],
+                'meals' => $mealsArray,
                 'total_price' => $order->total_price,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
-
             ],
         ]);
     }
+
 
 
 

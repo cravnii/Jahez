@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\GenderEnum;
+use Illuminate\Notifications\Notifiable;
+
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Notifiable;
+    use HasApiTokens, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -21,11 +20,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-           'name' ,
-            'email' ,
-            'gender',
-            'phone_number',
-            'password'
+        'name',
+        'email',
+        'gender',
+        'phone_number',
+        'password',
     ];
 
     /**
@@ -48,15 +47,18 @@ class User extends Authenticatable
         'gender'=> GenderEnum::class
     ];
 
-        public function setPasswordAttribute($value)
-        {
-            $this->attributes['password'] = bcrypt($value);
-        }
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_user');
+    }
 
-        public function orders()
-        {
-            return $this->belongsToMany(Order::class, 'order_user');
-        }
-
+    public function notifyLogin($ipAddress, $userAgent)
+    {
+        $this->notify(new \App\Notifications\LoginNotification($ipAddress, $userAgent));
+    }
 }

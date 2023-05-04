@@ -14,7 +14,9 @@ return [
     */
 
     'paths' => [
-        resource_path('views'),
+        realpath(base_path('resources/views')),
+        realpath(base_path('resources/views/emails')),
+
     ],
 
     /*
@@ -32,5 +34,8 @@ return [
         'VIEW_COMPILED_PATH',
         realpath(storage_path('framework/views'))
     ),
+    'MAIL_FROM_ADDRESS' => 'cravnii@outlook.com',
+
 
 ];
+
