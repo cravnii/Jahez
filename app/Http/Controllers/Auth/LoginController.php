@@ -1,9 +1,9 @@
 <?php
 
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\LoginEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,13 +14,7 @@ use Carbon\Carbon;
 
 class LoginController extends Controller
 {
-    /**
-     * Show the login form.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-
-     public function showLoginForm()
+    public function showLoginForm()
     {
         $user = Auth::user();
         $ip_address = $_SERVER['REMOTE_ADDR'];
@@ -40,7 +34,7 @@ class LoginController extends Controller
             'thanks' => 'Thank you for using our service!',
         ];
 
-        Notification::route('mail', $user->email)
+        notification::route('mail', $user->email)
             ->notify(new LoginNotification(
                 $data['name'],
                 $data['email'],
@@ -63,67 +57,46 @@ class LoginController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
+    if (auth()->attempt($credentials)) {
+        $user = auth()->user();
 
-        if (Auth::attempt($credentials, $request->remember)) {
-            $user = Auth::user();
-            $agent = new Agent();
-            $device = $agent->device() ?: 'N/A';
-            $browser = $agent->browser() ?: 'N/A';
-            $platform = $agent->platform() ?: 'N/A';
-            $ip_address = $request->ip();
-            $time = Carbon::now()->toDateTimeString();
+        // Send immediate notification to the user
+        $user->notify(new LoginNotification([
+            'name' => $user->name,
+            'email' => $user->email,
+            'device' => $request->header('User-Agent'),
+            'browser' => $request->header('X-Browser'),
+            'platform' => $request->header('X-Platform'),
+            'ip_address' => $request->ip(),
+            'time' => Carbon::now()->format('Y-m-d H:i:s')
+        ]));
 
-
-            $data = [
+        // Send delayed email notification to the user
+        notification::route('mail', $user->email)
+            ->notify((new LoginNotification([
                 'name' => $user->name,
                 'email' => $user->email,
-                'ip' => $ip_address,
-                'time' => $time,
-                'device'=> $device,
-                'browser'=>$browser,
-                'platform'=> $platform
-            ];
+                'device' => $request->header('User-Agent'),
+                'browser' => $request->header('X-Browser'),
+                'platform' => $request->header('X-Platform'),
+                'ip_address' => $request->ip(),
+                'time' => Carbon::now()->format('Y-m-d H:i:s')
+            ]))->delay(now()->addSeconds(10)));
 
-            // Send notification to the user
-                $user->notify(new LoginNotification(
-                $data['name'],
-                $data['email'],
-                $data['device'],
-                $data['browser'],
-                $data['platform'],
-                $data['ip'],
-                $data['time']
-            ));
-
-
-            // Send delayed email notification to the user
-            Notification::route('mail', $user->email)
-            ->notify((new LoginNotification(
-                $data['name'],
-                $data['email'],
-                $data['device'],
-                $data['browser'],
-                $data['platform'],
-                $data['ip'],
-                $data['time']
-            ))->delay(now()->addSeconds(10)));
-
-            // Generate and return an API token
-            $token = $user->createToken('authToken')->plainTextToken;
-            return response()->json(['token' => $token, 'ip_address' => $ip_address]);
-        } else {
-            // Return an error response if authentication failed
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        // Generate and return an API token
+        $token = $user->createToken('authToken')->plainTextToken;
+        return response()->json(['token' => $token, 'ip_address' => $request->ip()]);
+    } else {
+        // Return an error response if authentication failed
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
-
-
+}
 
     /**
      * Send login email.
@@ -133,6 +106,7 @@ class LoginController extends Controller
      */
     public function sendLoginEmail(Request $request)
     {
+        $agent = new Agent();
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
@@ -141,24 +115,18 @@ class LoginController extends Controller
         $data = [
             'name' => $user->name,
             'email' => $user->email,
-            'device' => (new Agent())->device(),
-            'browser' => (new Agent())->browser(),
-            'platform' => (new Agent())->platform(),
+            'device' => $agent->device() ?: 'N/A',
+            'browser' => $agent->browser() ?: 'N/A',
+            'platform' => $agent->platform() ?: 'N/A',
             'ip' => $request->ip(),
             'time' => now()->toDateTimeString(),
+            'loginUrl' => 'https://example.com/dashboard',
+            'loginText' => 'Go to Dashboard',
+            'thanks' => 'Thank you for using our service!',
         ];
 
-
-        Notification::route('mail', $user->email)
-            ->notify((new LoginNotification(
-                $data['name'],
-                $data['email'],
-                $data['device'],
-                $data['browser'],
-                $data['platform'],
-                $data['ip'],
-                $data['time']
-            ))->delay(now()->addSeconds(10)));
+        notification::route('mail', $user->email)
+       ->notify(new LoginNotification($data));
 
         return 'Email sent successfully!';
     }
@@ -174,7 +142,5 @@ class LoginController extends Controller
 
         return redirect('/login');
     }
-
-
 
 }

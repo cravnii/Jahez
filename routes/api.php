@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RestaurantController;
@@ -59,3 +60,7 @@ Route::get('/{meal}', [MealController::class, 'show'])->name('meals.show');
 Route::put('/{meal}', [MealController::class, 'update'])->name('meals.update');
 Route::delete('/{meal}', [MealController::class, 'destroy'])->name('meals.destroy');
 });
+
+
+Route::post('password/email', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword']);

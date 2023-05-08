@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
 use App\Enums\GenderEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\LoginNotification;
+use Jenssegers\Agent\Agent;
+use App\Models\Login;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    use HasApiTokens, HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +47,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'gender'=> GenderEnum::class
+        'gender' => GenderEnum::class,
     ];
 
     public function setPasswordAttribute($value)
@@ -57,8 +60,47 @@ class User extends Authenticatable
         return $this->belongsToMany(Order::class, 'order_user');
     }
 
-    public function notifyLogin($ipAddress, $userAgent)
+    public function notifyLogin(string $ipAddress, string $userAgent): void
     {
-        $this->notify(new \App\Notifications\LoginNotification($ipAddress, $userAgent));
+        // get user information
+        $data = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'device' => '',
+            'browser' => '',
+            'platform' => '',
+            'ip' => $ipAddress,
+            'time' => now(),
+        ];
+
+        // create a new login record
+        $user = Auth::user();
+        $login = $user->loginس()->create([
+            'ip_address' => $ipAddress,
+            'user_agent' => $userAgent,
+        ]);
+
+        // get device, browser and platform information from user agent
+        $agent = new Agent();
+        $data['device'] = $agent->device() ?? '';
+        $data['browser'] = $agent->browser() ?? '';
+        $data['platform'] = $agent->platform() ?? '';
+
+        // notify the user
+        $user->notify(new LoginNotification($login));
+
+        // create a new notification record in the database
+        $this->notifications()->create([
+            'type' => LoginNotification::class,
+            'data' => $data,
+            'user_id' => $this->id,
+        ]);
+    }
+
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 }
+

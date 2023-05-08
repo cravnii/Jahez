@@ -4,19 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Login extends Model
 {
     use HasFactory;
+    use Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'device',
-        'browser',
-        'platform',
-        'ip_address',
-        'login_at',
-    ];
+    protected $fillable = ['user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
+
 
