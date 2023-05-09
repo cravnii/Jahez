@@ -6,7 +6,7 @@
 {{ __('emails/login.device') }} {{ $device }}
 {{ __('emails/login.browser') }} {{ $browser }}
 {{ __('emails/login.platform') }} {{ $platform }}
-{{ __('emails/login.ip_address') }} {{ $ip }}
+{{ __(('IP_address: ' . $this->data['ip'])) }}
 {{ __('emails/login.time') }} {{ $time }}
 @endcomponent
 

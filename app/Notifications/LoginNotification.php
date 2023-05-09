@@ -2,27 +2,39 @@
 
 namespace App\Notifications;
 
-use App\Models\Login;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Jenssegers\Agent\Agent;
+use Illuminate\Notifications\Notification;
+
 
 class LoginNotification extends Notification
 {
-    
-    protected $data;
+    use Queueable;
+    private $data;
 
-    public function __construct(array $data)
+    /**
+     * Create a new notification instance.
+     */
+    public function __construct($data)
     {
         $this->data = $data;
     }
 
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     * */
     public function via($notifiable)
     {
         return ['mail', 'database'];
     }
 
+    /**
+     * Get the mail representation of the notification.
+     */
     public function toMail($notifiable)
     {
         return (new MailMessage)
@@ -39,24 +51,21 @@ class LoginNotification extends Notification
             ->salutation(__('emails/login.salutation'));
     }
 
-
-
-    public function toDatabase($notifiable)
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray($notifiable)
     {
         return [
-            'loginData' => json_encode($this->data),
+                'name'  => $this->data['name'],
+                'email' => $this->data['email'],
+                'device'  => $this->data['device'],
+                'browser'  => $this->data['browser'],
+                'platform'  => $this->data['platform'],
+                'IP_address'  => $this->data['ip'],
+                'time'  => $this->data['time']
         ];
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-

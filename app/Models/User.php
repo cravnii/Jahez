@@ -4,14 +4,13 @@ namespace App\Models;
 
 use App\Enums\GenderEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\LoginNotification;
 use Jenssegers\Agent\Agent;
-use App\Models\Login;
+
 
 class User extends Authenticatable
 {
@@ -60,7 +59,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Order::class, 'order_user');
     }
 
-    public function notifyLogin(string $ipAddress, string $userAgent): void
+    public function notifyLogin(string $ip, string $userAgent): void
     {
         // get user information
         $data = [
@@ -69,14 +68,14 @@ class User extends Authenticatable
             'device' => '',
             'browser' => '',
             'platform' => '',
-            'ip' => $ipAddress,
+            'IP_address' => $ip,
             'time' => now(),
         ];
 
         // create a new login record
         $user = Auth::user();
-        $login = $user->loginس()->create([
-            'ip_address' => $ipAddress,
+        $login = $user->logins()->create([
+            'IP_address' => $ip,
             'user_agent' => $userAgent,
         ]);
 

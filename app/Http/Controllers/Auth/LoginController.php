@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\LoginNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\LoginNotification;
 use Jenssegers\Agent\Agent;
-use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
 
 class LoginController extends Controller
 {
@@ -34,28 +34,12 @@ class LoginController extends Controller
             'thanks' => 'Thank you for using our service!',
         ];
 
-        notification::route('mail', $user->email)
-            ->notify(new LoginNotification(
-                $data['name'],
-                $data['email'],
-                $data['device'],
-                $data['browser'],
-                $data['platform'],
-                $data['ip'],
-                $data['time']
-            ));
-
-        return view('auth.login', compact('data'));
+        $user->notify(new LoginNotification($data));
     }
 
 
 
-    /**
-     * Login the user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function login(Request $request)
 {
     $credentials = $request->validate([
@@ -66,37 +50,26 @@ class LoginController extends Controller
     if (auth()->attempt($credentials)) {
         $user = auth()->user();
 
-        // Send immediate notification to the user
+
         $user->notify(new LoginNotification([
             'name' => $user->name,
             'email' => $user->email,
             'device' => $request->header('User-Agent'),
-            'browser' => $request->header('X-Browser'),
-            'platform' => $request->header('X-Platform'),
+            'browser' => $request->header('X-Browser') ?: 'N/A',
+            'platform' => $request->header('X-Platform') ?: 'N/A',
             'ip_address' => $request->ip(),
             'time' => Carbon::now()->format('Y-m-d H:i:s')
         ]));
 
-        // Send delayed email notification to the user
-        notification::route('mail', $user->email)
-            ->notify((new LoginNotification([
-                'name' => $user->name,
-                'email' => $user->email,
-                'device' => $request->header('User-Agent'),
-                'browser' => $request->header('X-Browser'),
-                'platform' => $request->header('X-Platform'),
-                'ip_address' => $request->ip(),
-                'time' => Carbon::now()->format('Y-m-d H:i:s')
-            ]))->delay(now()->addSeconds(10)));
 
-        // Generate and return an API token
         $token = $user->createToken('authToken')->plainTextToken;
         return response()->json(['token' => $token, 'ip_address' => $request->ip()]);
     } else {
-        // Return an error response if authentication failed
+
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 }
+
 
     /**
      * Send login email.
@@ -125,11 +98,12 @@ class LoginController extends Controller
             'thanks' => 'Thank you for using our service!',
         ];
 
-        notification::route('mail', $user->email)
+        Notification::route('mail', $user->email)
        ->notify(new LoginNotification($data));
 
         return 'Email sent successfully!';
     }
+
 
     /**
      * Logout the user.

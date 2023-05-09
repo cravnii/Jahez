@@ -19,6 +19,7 @@ Route::post('/register',[RegisterController::class, 'register'])->name('register
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+Route::get('/send-notification', [LoginController::class, 'login'])->name('sendLoginNotification');
 
 Route::prefix('/users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users.index');

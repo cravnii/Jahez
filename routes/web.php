@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Notifications\LoginNotification;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,4 +21,4 @@ Route::get('/logout', [LoginController::class, 'logout']);
 
 
 
-Route::get('/send-notification', [LoginNotification::class, 'sendLoginNotification']);
+

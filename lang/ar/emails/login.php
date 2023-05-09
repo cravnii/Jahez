@@ -9,7 +9,7 @@ return [
     'device' => 'الجهاز',
     'browser' => 'المتصفح',
     'platform' => 'النظام',
-    'ip' => 'عنوان الآي بي',
+    'IP_address' => 'عنوان الآي بي',
     'time' => 'الوقت',
     'salutation' => 'تحياتي،',
 ];

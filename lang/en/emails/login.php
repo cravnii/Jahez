@@ -9,7 +9,7 @@
         'device' => 'Device',
         'browser' => 'Browser',
         'platform' => 'Platform',
-        'ip' => 'IP Address',
+        'IP_address' => 'IP Address',
         'time' => 'Time',
         'salutation' => 'Best regards,',
     ];
