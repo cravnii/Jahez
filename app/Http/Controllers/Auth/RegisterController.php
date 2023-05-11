@@ -22,7 +22,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'gender' => $request->gender,
             'phone_number' => $request->phone_number,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
         ]);
 
         $token = $user->createToken('authToken', [])->plainTextToken;

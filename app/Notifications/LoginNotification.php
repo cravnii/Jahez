@@ -6,11 +6,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-
+use Illuminate\Support\Facades\DB;
 
 class LoginNotification extends Notification
 {
     use Queueable;
+
     private $data;
 
     /**
@@ -29,7 +30,7 @@ class LoginNotification extends Notification
      * */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['database'];
     }
 
     /**
@@ -59,13 +60,12 @@ class LoginNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-                'name'  => $this->data['name'],
-                'email' => $this->data['email'],
-                'device'  => $this->data['device'],
-                'browser'  => $this->data['browser'],
-                'platform'  => $this->data['platform'],
-                'IP_address'  => $this->data['ip'],
-                'time'  => $this->data['time']
+            'type' => 'NEW_SIGN_IN',
+            'notifiable_type' => get_class($notifiable),
+            'notifiable_id'=> $notifiable->id,
+            'data' =>  json_encode($this->data),
         ];
     }
 }
+
+
