@@ -25,9 +25,8 @@ class UserController extends Controller
         $validatedData = $request->validated();
         User::create($validatedData);
 
-        return response()->json([
-            'message' => 'User was created successfully'
-        ]);
+        return response()->json(['message' => 'User created successfully'], 201);
+
     }
 
 
@@ -51,17 +50,15 @@ class UserController extends Controller
 
         $user->update($validatedData);
 
-        return response()->json([
-            'message' => 'User was updated successfully'
-    ]);
+        return response()->json(['message' => 'User created successfully'], 201);
+
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return response()->json([
-            'message' => 'User deleted successfully'
-        ]);
+        return response()->json(['message' => 'User created successfully'], 201);
+
     }
 
 }

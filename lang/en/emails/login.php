@@ -13,4 +13,3 @@
         'time' => 'Time',
         'salutation' => 'Best regards,',
     ];
-

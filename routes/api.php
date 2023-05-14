@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController ;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RestaurantController;
@@ -19,7 +19,6 @@ Route::post('/register',[RegisterController::class, 'register'])->name('register
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
-Route::get('/send-notification', [LoginController::class, 'login'])->name('sendLoginNotification');
 
 Route::prefix('/users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users.index');
@@ -63,5 +62,5 @@ Route::delete('/{meal}', [MealController::class, 'destroy'])->name('meals.destro
 });
 
 
-Route::post('password/email', [ForgotPasswordController::class, 'forgotPassword']);
-Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword']);
+Route::post('password/forgot', [ResetPasswordController ::class, 'forgotPassword']);
+Route::post('password/reset', [ResetPasswordController ::class, 'resetPassword']);
