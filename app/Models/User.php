@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Enums\GenderEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Order;
+
 
 
 
@@ -50,8 +53,8 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_user', 'user_id', 'order_id');
-
     }
+
 
 
 

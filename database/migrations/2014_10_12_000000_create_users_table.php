@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('gender', GenderEnum::getValues())->nullable();
+            $table->unsignedTinyInteger('gender')->nullable();
             $table->string('phone_number');
             $table->rememberToken();
             $table->timestamps();
