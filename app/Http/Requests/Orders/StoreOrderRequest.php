@@ -23,12 +23,9 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'integer', 'exists:users,id'],
-            'meals' => ['required','array'],
-            'meals.*.id' => ['required','exists:meals,id'],
-            'total_price' => ['required','numeric','min:0']
+            'meals' => ['required', 'array'],
+            'meals.*.id' => ['required', 'exists:meals,id'],
+            'total_price' => ['required', 'numeric', 'min:0']
         ];
     }
 }
-
-
-

@@ -87,9 +87,6 @@ class OrderController extends Controller
     }
 
 
-
-
-
     public function show(Order $order)
     {
         if (!$order) {
@@ -123,5 +120,4 @@ class OrderController extends Controller
             'message' => 'Order deleted successfully'
         ]);
     }
-
 }

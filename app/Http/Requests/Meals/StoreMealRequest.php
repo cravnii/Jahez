@@ -23,10 +23,9 @@ class StoreMealRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer'],
-            'restaurant_id'=> ['required', 'integer', 'exists:restaurants,id'],
-            'name'=> ['required', 'string'],
-            'price'=> ['required', 'integer'],
+            'restaurant_id' => ['required', 'integer', 'exists:restaurants,id'],
+            'name' => ['required', 'string'],
+            'price' => ['required', 'integer'],
         ];
     }
-
 }

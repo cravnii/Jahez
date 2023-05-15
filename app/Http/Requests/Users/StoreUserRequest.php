@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:50'],
             'email' => ['required', 'email', 'unique:users'],
-            'gender' => ['required','integer', new EnumValue(GenderEnum::class,false)],
+            'gender' => ['required', 'integer', new EnumValue(GenderEnum::class, false)],
             'password' => ['required', 'string', 'min:8'],
             'phone_number' => ['required', new PhoneRule()]
         ];

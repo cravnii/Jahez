@@ -70,11 +70,6 @@ class LoginController extends Controller
         }
     }
 
-    /**
-     * Logout the user.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function logout()
     {
         // Log out the user by invalidating their session

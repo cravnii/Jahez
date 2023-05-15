@@ -3,8 +3,6 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
 

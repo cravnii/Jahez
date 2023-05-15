@@ -15,7 +15,7 @@ class UserController extends Controller
         $users = User::paginate(10);
         return response()->json([
             'data' => [
-               'users'=>  UsersResources::collection($users) ,
+                'users' =>  UsersResources::collection($users),
             ]
         ]);
     }
@@ -26,7 +26,6 @@ class UserController extends Controller
         User::create($validatedData);
 
         return response()->json(['message' => 'User created successfully'], 201);
-
     }
 
 
@@ -44,22 +43,18 @@ class UserController extends Controller
     }
 
 
-    public function update(UpdateUserRequest $request,User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $validatedData = $request->validated();
 
         $user->update($validatedData);
 
         return response()->json(['message' => 'User created successfully'], 201);
-
     }
 
     public function destroy(User $user)
     {
         $user->delete();
         return response()->json(['message' => 'User created successfully'], 201);
-
     }
-
 }
-

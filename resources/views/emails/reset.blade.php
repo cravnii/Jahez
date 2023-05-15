@@ -1,14 +1,14 @@
 {{ __('emails/reset.value') }}
 
 @component('mail::message')
-# {{ __('subject') }}
-{{ __('greeting') }}
-{{ __('body') }}
+    {{ __('emails/reset.subject') }}
+    {{ __('emails/reset.greeting') }}
+    {{ __('emails/reset.body') }}
 
-@component('mail::button', ['url' => url('password/reset', $token)])
-{{ __('mail.button') }}
-@endcomponent
+    @component('mail::button', ['url' => url('password/reset', $token)])
+        {{ __('emails/reset.button') }}
+    @endcomponent
 
-{{ __('mail.message') }}
-{{ __('salutation') }}
+    {{ __('emails/reset.message') }}
+    {{ __('emails/reset.salutation') }}
 @endcomponent

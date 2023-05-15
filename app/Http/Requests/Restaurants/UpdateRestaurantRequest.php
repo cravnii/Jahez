@@ -26,9 +26,7 @@ class UpdateRestaurantRequest extends FormRequest
             'name' => ['nullable', 'string', 'min:3', 'max:50'],
             'phone_number' => ['nullable', new PhoneRule()],
             'email' => ['nullable', 'email', 'unique:users'],
-            'location' => ['nullable', 'string' , 'alpha'],
+            'location' => ['nullable', 'string', 'alpha'],
         ];
     }
-
-
 }

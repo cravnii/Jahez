@@ -6,7 +6,7 @@ use App\Enums\GenderEnum;
 use App\Rules\PhoneRule;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+
 
 class UpdateUserRequest extends FormRequest
 {
@@ -28,12 +28,9 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['nullable', 'string', 'min:3', 'max:50'],
             'email' => ['nullable', 'email', 'unique:users'],
-            'gender' => ['nullable', 'integer', new EnumValue(GenderEnum::class,false)],
+            'gender' => ['nullable', 'integer', new EnumValue(GenderEnum::class, false)],
             'password' => ['nullable', 'string', 'min:8', 'regex:/^[a-zA-Z0-9$#@!%^&*()\-_=+{};:,<.>\/?|[\]~`]+$/'],
             'phone_number' => ['nullable', new PhoneRule()]
         ];
     }
-
-
-
 }

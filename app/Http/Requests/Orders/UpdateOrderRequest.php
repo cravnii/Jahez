@@ -27,7 +27,4 @@ class UpdateOrderRequest extends FormRequest
             'total_price' => ['nullable', 'integer'],
         ];
     }
-
-
-    }
-
+}

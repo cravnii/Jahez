@@ -13,4 +13,3 @@ return [
     'time' => 'الوقت',
     'salutation' => 'تحياتي،',
 ];
-

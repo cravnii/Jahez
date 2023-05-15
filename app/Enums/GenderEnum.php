@@ -9,4 +9,3 @@ final class GenderEnum extends Enum
     const Female = 0;
     const Male = 1;
 }
-
