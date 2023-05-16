@@ -9,6 +9,6 @@
         {{ __('emails/reset.button') }}
     @endcomponent
 
-    {{ __('emails/reset.message') }}
+
     {{ __('emails/reset.salutation') }}
 @endcomponent
