@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Restaurant;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Restaurants\StoreRestaurantRequest;
 use App\Http\Requests\Restaurants\UpdateRestaurantRequest;
 use App\Http\Resources\Restaurants\RestaurantsResource;

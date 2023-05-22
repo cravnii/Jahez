@@ -3,9 +3,9 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\MealController;
+use App\Http\Controllers\Restaurant\Meal\MealController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\Restaurant\RestaurantController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,14 +41,6 @@ Route::prefix('/orders')->group(function () {
     Route::get('/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::put('/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
-});
-
-Route::prefix('/meals')->group(function () {
-    Route::get('/', [MealController::class, 'index'])->name('meals.index');
-    Route::post('/store', [MealController::class, 'store'])->name('meals.store');
-    Route::get('/{meal}', [MealController::class, 'show'])->name('meals.show');
-    Route::put('/{meal}', [MealController::class, 'update'])->name('meals.update');
-    Route::delete('/{meal}', [MealController::class, 'destroy'])->name('meals.destroy');
 });
 
 Route::prefix('/meals')->group(function () {

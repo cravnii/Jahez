@@ -22,7 +22,7 @@ class UpdateMealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['nullable', 'integer'],
+            'id' => ['c', 'integer'],
             'restaurant_id' => ['nullable', 'integer', 'exists:restaurants,id'],
             'name' => ['nullable', 'string'],
             'price' => ['nullable', 'integer'],
